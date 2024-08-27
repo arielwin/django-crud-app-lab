@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/cars/car-detail.css' %}" />
+{% endblock %} 
+{% block content %}
+<section class="car-container">
+  <div class="cat-img">
+    <img src="{% static 'images/sk8r-boi-cat.svg' %}" alt="Car Photo Go Here" />
+  </div>
+  <div class="car-details">
+    <h2>{{ car.make }} {{ car.model }}</h2>
+    <h2>Year: {{ car.year }}</h2>
+    <h2>Color: {{ car.color }}</h2>
+    {% if car.warranty == True %}
+        <h2>This car has a warranty.</h2>
+    {% else %}
+        <h2>This car does not have a warranty.</h2>
+    {% endif %}
+    <h2>{{ car.description }}</h2>
+  </div>
+  <div class="car-actions">
+    <a href="{% url 'car-update' car.id %}" class="btn warn">Edit</a>
+    <a href="{% url 'car-delete' car.id %}" class="btn danger">Delete</a>
+  </div>
+</section>
+{% endblock %}

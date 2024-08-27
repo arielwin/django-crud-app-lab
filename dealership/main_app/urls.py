@@ -4,4 +4,8 @@ from . import views
 urlpatterns = [
 	path('', views.home, name ='home'), # Mount the app's routes at the root URL
 	path('cars/', views.car_index, name='car-index'),
+    path('cars/<int:car_id>/', views.car_detail, name='car-detail'),
+    path('cars/create/', views.CarCreate.as_view(), name='car-create'),
+    path('cars/<int:pk>/update/', views.CarUpdate.as_view(), name='car-update'),
+    path('cars/<int:pk>/delete/', views.CarDelete.as_view(), name='car-delete'),
 ]
