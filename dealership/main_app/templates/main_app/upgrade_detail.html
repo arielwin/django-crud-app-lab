@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/upgrades/upgrade-detail.css' %}" />
+{% endblock %} 
+{% block content %}
+
+<div class="card" style="border-color: black">
+  <div class="card-bg" style="background-color: white"></div>
+  <div class="card-content">
+    <h2>{{ upgrade.name }}</h2>
+    <p>${{ upgrade.price }}</p>
+  </div>
+</div>
+<a href="{% url 'upgrade-update' upgrade.id %}" class="btn warn">Edit</a>
+<a href="{% url 'upgrade-delete' upgrade.id %}" class="btn danger">Delete</a>
+
+{% endblock %}

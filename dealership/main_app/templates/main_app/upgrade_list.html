@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/upgrades/upgrade-index.css' %}" />
+{% endblock %} 
+{% block content %}
+
+<section class="page-header">
+  <h1>All Available Upgrades</h1>
+
+</section>
+
+<section class="card-container">
+  {% for upgrade in upgrade_list %}
+    <div class="card" style="border-color: black">
+      <div class="card-bg" style="background-color: white"></div>
+      <a href="{% url 'upgrade-detail' upgrade.id %}">
+        <div class="card-content">
+          <h2>{{ upgrade.name }}</h2>
+          <p>${{ upgrade.price }}</p>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}

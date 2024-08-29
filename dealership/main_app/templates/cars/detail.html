@@ -1,8 +1,8 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base.html' %}
+{% load static %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/cars/car-detail.css' %}" />
-{% endblock %} 
+{% endblock %}
 {% block content %}
 <section class="car-container">
   <div class="cat-img">
@@ -13,9 +13,9 @@
     <h2>Year: {{ car.year }}</h2>
     <h2>Color: {{ car.color }}</h2>
     {% if car.warranty == True %}
-        <h2>This car has a warranty.</h2>
+    <h2>This car has a warranty.</h2>
     {% else %}
-        <h2>This car does not have a warranty.</h2>
+    <h2>This car does not have a warranty.</h2>
     {% endif %}
     <h2>{{ car.description }}</h2>
   </div>
@@ -24,4 +24,90 @@
     <a href="{% url 'car-delete' car.id %}" class="btn danger">Delete</a>
   </div>
 </section>
+
+<div class="feedings-toy-container">
+  <section class="feedings">
+    <div class="subsection-title">
+      <h2>Cleanings</h2>
+    </div>
+    <form action="{% url 'add-cleaning' car.id %}" method="post" class="subsection-content" autocomplete="off">
+      {% csrf_token %}
+      {{ cleaning_form.as_p }}
+      <button type="submit" class="btn submit">Add Cleaning</button>
+    </form>
+    {% if car.cleaning_set.all.count %}
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cleaning in car.cleaning_set.all %}
+        <tr>
+          <td>{{cleaning.date}}</td>
+          <td>{{cleaning.get_type_display}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="subsection-content">
+      <p>⚠️ This {{car.make}} {{ car.model }} has not been cleaned!</p>
+    </div>
+    {% endif %}
+  </section>
+
+
+  <section class="toys">
+    <div class="subsection-title">
+      <h2>Upgrades</h2>
+    </div>
+
+    <div class="subsection-content">
+      {% if car.upgrades.count %} 
+        {% for upgrade in car.upgrades.all %}
+          <div class="toy-container">
+            <div class="color-block" style="background-color: white"></div>
+            <a href="{% url 'upgrade-detail' upgrade.id %}">
+              <p>${{ upgrade.price }} {{ upgrade.name }}</p>
+            </a>
+            <form action="{% url 'remove-upgrade' car.id upgrade.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Remove Upgrade</button>
+            </form>
+          </div>
+        {% endfor %} 
+      {% else %}
+        <p class="no-toys">{{car.make}} {{ car.model }} doesn't have any upgrades.</p>
+      {% endif %}
+    </div>
+
+    <h3>Available Upgrades</h3>
+    <div class="subsection-content">
+      {% if upgrades.count %}
+      {% for upgrade in upgrades.all %}
+        <div class="toy-container">
+          <div class="color-block" style="background-color: white"></div>
+
+              <p>{{ upgrade.price }} {{ upgrade.name }}</p>
+
+          <form action="{% url 'associate-upgrade' car.id upgrade.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn submit">Add Upgrade</button>
+          </form>
+        </div>
+      {% endfor %}
+      {% else %}
+      <p class="all-toys">{{car.make}} {{ car.model}} already has all the available upgrades 🥳</p>
+    {% endif %}
+    </div>
+
+  </section>
+
+  
+</div>
+
+
 {% endblock %}

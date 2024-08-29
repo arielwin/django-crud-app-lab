@@ -2,5 +2,16 @@
 {% block content %}
 <h1>Welcome to Gary's Garage!</h1>
 <h2>Head over to "All Cars" to see whats available.</h2>
-<h3>Make an account (when I figure that out) and reach out to sellers or list your own car!</h3>
+
+{% if not user.is_authenticated %}
+
+<section>
+    <form action="{% url 'home' %}" method="post" class="login">
+      <h1>Login</h1>
+      {% csrf_token %} {{ form.as_p }}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <button type="submit" class="btn submit">Login</button>
+    </form>
+  </section>
+  {% endif %}
 {% endblock %}
